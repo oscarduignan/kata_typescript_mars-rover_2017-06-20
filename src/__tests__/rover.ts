@@ -35,16 +35,60 @@ class Rover {
 
       switch (command) {
         case "F":
-          this.location = new RoverLocation(
-            previousLocation.x,
-            previousLocation.y + 1
-          );
+          switch (this.direction) {
+            case RoverDirection.North:
+              this.location = new RoverLocation(
+                previousLocation.x,
+                previousLocation.y + 1
+              );
+              break;
+            case RoverDirection.East:
+              this.location = new RoverLocation(
+                previousLocation.x + 1,
+                previousLocation.y
+              );
+              break;
+            case RoverDirection.South:
+              this.location = new RoverLocation(
+                previousLocation.x,
+                previousLocation.y - 1
+              );
+              break;
+            case RoverDirection.West:
+              this.location = new RoverLocation(
+                previousLocation.x - 1,
+                previousLocation.y
+              );
+              break;
+          }
           break;
         case "B":
-          this.location = new RoverLocation(
-            previousLocation.x,
-            previousLocation.y - 1
-          );
+          switch (this.direction) {
+            case RoverDirection.North:
+              this.location = new RoverLocation(
+                previousLocation.x,
+                previousLocation.y - 1
+              );
+              break;
+            case RoverDirection.East:
+              this.location = new RoverLocation(
+                previousLocation.x - 1,
+                previousLocation.y
+              );
+              break;
+            case RoverDirection.South:
+              this.location = new RoverLocation(
+                previousLocation.x,
+                previousLocation.y + 1
+              );
+              break;
+            case RoverDirection.West:
+              this.location = new RoverLocation(
+                previousLocation.x + 1,
+                previousLocation.y
+              );
+              break;
+          }
           break;
         case "R":
           var nextDirection = RoverDirections.indexOf(this.direction) + 1;
@@ -65,6 +109,7 @@ class Rover {
             ];
           break;
         default:
+          console.log("unrecognised command");
           break;
       }
     });
@@ -168,7 +213,7 @@ test("should let me rotate the rover left and right", () => {
   expect(rover.getDirection()).toBe(RoverDirection.North);
 });
 
-test("should move in the forward in the correct direction after being rotated left", () => {
+test("should move forward in the correct direction after being rotated left", () => {
   let rover = new Rover(new RoverLocation(0, 0), RoverDirection.North);
 
   rover.execute(["L", "F"]);
@@ -177,5 +222,89 @@ test("should move in the forward in the correct direction after being rotated le
 
   expect(rover.getDirection()).toBe(RoverDirection.West);
   expect(newLocation.x).toBe(-1);
+  expect(newLocation.y).toBe(0);
+});
+
+test("should move backward in the correct direction after being rotated left", () => {
+  let rover = new Rover(new RoverLocation(0, 0), RoverDirection.North);
+
+  rover.execute(["L", "B"]);
+
+  let newLocation = rover.getLocation();
+
+  expect(rover.getDirection()).toBe(RoverDirection.West);
+  expect(newLocation.x).toBe(1);
+  expect(newLocation.y).toBe(0);
+});
+
+test("should move forward when facing east", () => {
+  let rover = new Rover(new RoverLocation(0, 0), RoverDirection.East);
+
+  rover.execute(["F"]);
+
+  let newLocation = rover.getLocation();
+
+  expect(rover.getDirection()).toBe(RoverDirection.East);
+  expect(newLocation.x).toBe(1);
+  expect(newLocation.y).toBe(0);
+});
+
+test("should move backward when facing east", () => {
+  let rover = new Rover(new RoverLocation(0, 0), RoverDirection.East);
+
+  rover.execute(["B"]);
+
+  let newLocation = rover.getLocation();
+
+  expect(rover.getDirection()).toBe(RoverDirection.East);
+  expect(newLocation.x).toBe(-1);
+  expect(newLocation.y).toBe(0);
+});
+
+test("should move forward when facing south", () => {
+  let rover = new Rover(new RoverLocation(0, 0), RoverDirection.South);
+
+  rover.execute(["F"]);
+
+  let newLocation = rover.getLocation();
+
+  expect(rover.getDirection()).toBe(RoverDirection.South);
+  expect(newLocation.x).toBe(0);
+  expect(newLocation.y).toBe(-1);
+});
+
+test("should move backward when facing south", () => {
+  let rover = new Rover(new RoverLocation(0, 0), RoverDirection.South);
+
+  rover.execute(["B"]);
+
+  let newLocation = rover.getLocation();
+
+  expect(rover.getDirection()).toBe(RoverDirection.South);
+  expect(newLocation.x).toBe(0);
+  expect(newLocation.y).toBe(1);
+});
+
+test("should move forward when facing west", () => {
+  let rover = new Rover(new RoverLocation(0, 0), RoverDirection.West);
+
+  rover.execute(["F"]);
+
+  let newLocation = rover.getLocation();
+
+  expect(rover.getDirection()).toBe(RoverDirection.West);
+  expect(newLocation.x).toBe(-1);
+  expect(newLocation.y).toBe(0);
+});
+
+test("should move backward when facing west", () => {
+  let rover = new Rover(new RoverLocation(0, 0), RoverDirection.West);
+
+  rover.execute(["B"]);
+
+  let newLocation = rover.getLocation();
+
+  expect(rover.getDirection()).toBe(RoverDirection.West);
+  expect(newLocation.x).toBe(1);
   expect(newLocation.y).toBe(0);
 });
