@@ -1,179 +1,181 @@
 class RoverLocation {
-    constructor(public x: number, public y: number) {
-    }
+  constructor(public x: number, public y: number) {}
 }
-
 
 enum RoverDirection {
-    North,
-    East,
-    South,
-    West
+  North,
+  East,
+  South,
+  West
 }
 
-
-const RoverDirections = Object.keys(RoverDirection).map(k => RoverDirection[k]).filter(v => typeof v !== "string")
-
+const RoverDirections = Object.keys(RoverDirection)
+  .map(k => RoverDirection[k])
+  .filter(v => typeof v !== "string");
 
 type RoverCommand = "F" | "B" | "R" | "L";
 
-
 class Rover {
+  constructor(
+    private location: RoverLocation,
+    private direction: RoverDirection
+  ) {}
 
-    constructor(private location: RoverLocation, private direction: RoverDirection) {
-    }
+  getLocation() {
+    return this.location;
+  }
 
-    getLocation() {
-        return this.location;
-    }
+  getDirection() {
+    return this.direction;
+  }
 
-    getDirection() {
-        return this.direction;
-    }
+  execute(commands: Array<RoverCommand>) {
+    commands.forEach(command => {
+      let previousLocation = this.location;
 
-    execute(commands: Array<RoverCommand>) {
-        commands.forEach((command) => {
-            let previousLocation = this.location;
-
-            switch (command) {
-                case "F":
-                    this.location = new RoverLocation(previousLocation.x, previousLocation.y + 1) 
-                    break;
-                case "B":
-                    this.location = new RoverLocation(previousLocation.x, previousLocation.y - 1) 
-                    break;
-                case "R":
-                    var nextDirection = RoverDirections.indexOf(this.direction) + 1;
-                    this.direction = RoverDirection[RoverDirection[nextDirection >= RoverDirections.length ? 0 : nextDirection]]
-                    break;
-                case "L":
-                    var nextDirection = RoverDirections.indexOf(this.direction) - 1;
-                    this.direction = RoverDirection[RoverDirection[nextDirection < 0 ? RoverDirections.length - 1 : nextDirection]]
-                    break;
-                default:
-                    break;
-            }
-        })
-    }
+      switch (command) {
+        case "F":
+          this.location = new RoverLocation(
+            previousLocation.x,
+            previousLocation.y + 1
+          );
+          break;
+        case "B":
+          this.location = new RoverLocation(
+            previousLocation.x,
+            previousLocation.y - 1
+          );
+          break;
+        case "R":
+          var nextDirection = RoverDirections.indexOf(this.direction) + 1;
+          this.direction =
+            RoverDirection[
+              RoverDirection[
+                nextDirection >= RoverDirections.length ? 0 : nextDirection
+              ]
+            ];
+          break;
+        case "L":
+          var nextDirection = RoverDirections.indexOf(this.direction) - 1;
+          this.direction =
+            RoverDirection[
+              RoverDirection[
+                nextDirection < 0 ? RoverDirections.length - 1 : nextDirection
+              ]
+            ];
+          break;
+        default:
+          break;
+      }
+    });
+  }
 }
 
-
 test("2 + 2 = 4", () => {
-    expect(2 + 2).toBe(4)
-})
-
-
-test('should let me set an initial starting point and direction', () => {
-    let location = new RoverLocation(0, 0);
-    let direction: RoverDirection = RoverDirection.North;
-    let rover = new Rover(location, direction)
-
-    expect(rover.getLocation()).toBe(location)
-    expect(rover.getDirection()).toBe(direction)
+  expect(2 + 2).toBe(4);
 });
 
+test("should let me set an initial starting point and direction", () => {
+  let location = new RoverLocation(0, 0);
+  let direction: RoverDirection = RoverDirection.North;
+  let rover = new Rover(location, direction);
 
-test('should let me move the rover forward once when facing north', () => {
-    let rover = new Rover(new RoverLocation(0,0), RoverDirection.North)    
-
-    rover.execute(["F"])
-
-    let newLocation = rover.getLocation()
-
-    expect(newLocation.x).toBe(0)
-    expect(newLocation.y).toBe(1)
+  expect(rover.getLocation()).toBe(location);
+  expect(rover.getDirection()).toBe(direction);
 });
 
+test("should let me move the rover forward once when facing north", () => {
+  let rover = new Rover(new RoverLocation(0, 0), RoverDirection.North);
 
-test('should let me move the rover forward multiple times when facing north', () => {
-    let rover = new Rover(new RoverLocation(0,0), RoverDirection.North)    
+  rover.execute(["F"]);
 
-    rover.execute(["F", "F"])
+  let newLocation = rover.getLocation();
 
-    let newLocation = rover.getLocation()
-
-    expect(newLocation.x).toBe(0)
-    expect(newLocation.y).toBe(2)
+  expect(newLocation.x).toBe(0);
+  expect(newLocation.y).toBe(1);
 });
 
+test("should let me move the rover forward multiple times when facing north", () => {
+  let rover = new Rover(new RoverLocation(0, 0), RoverDirection.North);
 
-test('should let me move the rover backward once when facing north', () => {
-    let rover = new Rover(new RoverLocation(0,0), RoverDirection.North)    
+  rover.execute(["F", "F"]);
 
-    rover.execute(["B"])
+  let newLocation = rover.getLocation();
 
-    let newLocation = rover.getLocation()
-
-    expect(newLocation.x).toBe(0)
-    expect(newLocation.y).toBe(-1)
+  expect(newLocation.x).toBe(0);
+  expect(newLocation.y).toBe(2);
 });
 
+test("should let me move the rover backward once when facing north", () => {
+  let rover = new Rover(new RoverLocation(0, 0), RoverDirection.North);
 
-test('should let me move the rover backward multiple times when facing north', () => {
-    let rover = new Rover(new RoverLocation(0,0), RoverDirection.North)    
+  rover.execute(["B"]);
 
-    rover.execute(["B", "B"])
+  let newLocation = rover.getLocation();
 
-    let newLocation = rover.getLocation()
-
-    expect(newLocation.x).toBe(0)
-    expect(newLocation.y).toBe(-2)
+  expect(newLocation.x).toBe(0);
+  expect(newLocation.y).toBe(-1);
 });
 
+test("should let me move the rover backward multiple times when facing north", () => {
+  let rover = new Rover(new RoverLocation(0, 0), RoverDirection.North);
 
-test('should let me rotate the rover right once', () => {
-    let rover = new Rover(new RoverLocation(0,0), RoverDirection.North)    
+  rover.execute(["B", "B"]);
 
-    rover.execute(["R"])
+  let newLocation = rover.getLocation();
 
-    expect(rover.getDirection()).toBe(RoverDirection.East)
+  expect(newLocation.x).toBe(0);
+  expect(newLocation.y).toBe(-2);
 });
 
+test("should let me rotate the rover right once", () => {
+  let rover = new Rover(new RoverLocation(0, 0), RoverDirection.North);
 
-test('should let me rotate the rover right multiple times', () => {
-    let rover = new Rover(new RoverLocation(0,0), RoverDirection.North)    
+  rover.execute(["R"]);
 
-    rover.execute(["R", "R"])
-
-    expect(rover.getDirection()).toBe(RoverDirection.South)
+  expect(rover.getDirection()).toBe(RoverDirection.East);
 });
 
+test("should let me rotate the rover right multiple times", () => {
+  let rover = new Rover(new RoverLocation(0, 0), RoverDirection.North);
 
-test('should let me rotate the rover left once', () => {
-    let rover = new Rover(new RoverLocation(0,0), RoverDirection.North)    
+  rover.execute(["R", "R"]);
 
-    rover.execute(["L"])
-
-    expect(rover.getDirection()).toBe(RoverDirection.West)
+  expect(rover.getDirection()).toBe(RoverDirection.South);
 });
 
+test("should let me rotate the rover left once", () => {
+  let rover = new Rover(new RoverLocation(0, 0), RoverDirection.North);
 
-test('should let me rotate the rover left multiple times', () => {
-    let rover = new Rover(new RoverLocation(0,0), RoverDirection.North)    
+  rover.execute(["L"]);
 
-    rover.execute(["L", "L"])
-
-    expect(rover.getDirection()).toBe(RoverDirection.South)
+  expect(rover.getDirection()).toBe(RoverDirection.West);
 });
 
+test("should let me rotate the rover left multiple times", () => {
+  let rover = new Rover(new RoverLocation(0, 0), RoverDirection.North);
 
-test('should let me rotate the rover left and right', () => {
-    let rover = new Rover(new RoverLocation(0,0), RoverDirection.North)    
+  rover.execute(["L", "L"]);
 
-    rover.execute(["L", "R"])
-
-    expect(rover.getDirection()).toBe(RoverDirection.North)
+  expect(rover.getDirection()).toBe(RoverDirection.South);
 });
 
+test("should let me rotate the rover left and right", () => {
+  let rover = new Rover(new RoverLocation(0, 0), RoverDirection.North);
 
-test('should move in the forward in the correct direction after being rotated left', () => {
-    let rover = new Rover(new RoverLocation(0,0), RoverDirection.North)    
+  rover.execute(["L", "R"]);
 
-    rover.execute(["L", "F"])
+  expect(rover.getDirection()).toBe(RoverDirection.North);
+});
 
-    let newLocation = rover.getLocation()
+test("should move in the forward in the correct direction after being rotated left", () => {
+  let rover = new Rover(new RoverLocation(0, 0), RoverDirection.North);
 
-    expect(rover.getDirection()).toBe(RoverDirection.West)
-    expect(newLocation.x).toBe(-1)
-    expect(newLocation.y).toBe(0)
+  rover.execute(["L", "F"]);
+
+  let newLocation = rover.getLocation();
+
+  expect(rover.getDirection()).toBe(RoverDirection.West);
+  expect(newLocation.x).toBe(-1);
+  expect(newLocation.y).toBe(0);
 });
