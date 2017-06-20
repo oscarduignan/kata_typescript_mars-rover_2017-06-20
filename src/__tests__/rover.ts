@@ -6,7 +6,7 @@ class Vector {
   }
 
   equals(other: Vector) {
-    return this.x === other.x && this.y === other.y
+    return this.x === other.x && this.y === other.y;
   }
 }
 
@@ -68,7 +68,8 @@ class Rover {
           );
           break;
         case "R":
-          var nextDirection = PossibleDirections.indexOf(this.currentDirection) + 1;
+          var nextDirection =
+            PossibleDirections.indexOf(this.currentDirection) + 1;
           this.currentDirection =
             Direction[
               Direction[
@@ -77,11 +78,14 @@ class Rover {
             ];
           break;
         case "L":
-          var nextDirection = PossibleDirections.indexOf(this.currentDirection) - 1;
+          var nextDirection =
+            PossibleDirections.indexOf(this.currentDirection) - 1;
           this.currentDirection =
             Direction[
               Direction[
-                nextDirection < 0 ? PossibleDirections.length - 1 : nextDirection
+                nextDirection < 0
+                  ? PossibleDirections.length - 1
+                  : nextDirection
               ]
             ];
           break;
@@ -98,7 +102,7 @@ test("should let me set an initial starting point and direction", () => {
   let direction: Direction = Direction.North;
   let rover = new Rover(location, direction);
 
-  expect(rover.location().equals(location)).toBeTruthy()
+  expect(rover.location().equals(location)).toBeTruthy();
 });
 
 test("should let me move the rover forward once when facing north", () => {
@@ -114,7 +118,7 @@ test("should let me move the rover forward multiple times when facing north", ()
 
   rover.execute(["F", "F"]);
 
-  expect(rover.location().equals(new Vector(0, 2))).toBeTruthy()
+  expect(rover.location().equals(new Vector(0, 2))).toBeTruthy();
 });
 
 test("should let me move the rover backward once when facing north", () => {
