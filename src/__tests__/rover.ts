@@ -58,8 +58,6 @@ class Rover {
 
   execute(commands: Array<RoverCommand>) {
     commands.forEach(command => {
-      let previousLocation = this.currentLocation;
-
       switch (command) {
         case "F":
         case "B":
@@ -68,7 +66,7 @@ class Rover {
           );
           break;
         case "R":
-          var nextDirection =
+          let nextDirection =
             PossibleDirections.indexOf(this.currentDirection) + 1;
           this.currentDirection =
             Direction[
@@ -78,7 +76,7 @@ class Rover {
             ];
           break;
         case "L":
-          var nextDirection =
+          let nextDirection =
             PossibleDirections.indexOf(this.currentDirection) - 1;
           this.currentDirection =
             Direction[
