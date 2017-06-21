@@ -180,8 +180,6 @@ test("should move forward in the correct direction after being rotated left", ()
 
   rover.execute(["L", "F"]);
 
-  let newLocation = rover.location();
-
   expect(rover.location().equals(new Vector(-1, 0))).toBeTruthy();
 });
 
@@ -189,8 +187,6 @@ test("should move backward in the correct direction after being rotated left", (
   let rover = new Rover(new Vector(0, 0), Direction.North);
 
   rover.execute(["L", "B"]);
-
-  let newLocation = rover.location();
 
   expect(rover.location().equals(new Vector(1, 0))).toBeTruthy();
 });
@@ -207,8 +203,6 @@ test("should move backward when facing east", () => {
   let rover = new Rover(new Vector(0, 0), Direction.East);
 
   rover.execute(["B"]);
-
-  let newLocation = rover.location();
 
   expect(rover.location().equals(new Vector(-1, 0))).toBeTruthy();
 });
@@ -241,8 +235,6 @@ test("should move backward when facing west", () => {
   let rover = new Rover(new Vector(0, 0), Direction.West);
 
   rover.execute(["B"]);
-
-  let newLocation = rover.location();
 
   expect(rover.location().equals(new Vector(1, 0))).toBeTruthy();
 });
